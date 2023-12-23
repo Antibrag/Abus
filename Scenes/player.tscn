@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck8ggdam2ubrn"]
+
+[ext_resource type="Script" path="res://Scripts/Player.cs" id="1_1exl3"]
+[ext_resource type="PackedScene" uid="uid://dl15mscil6s5a" path="res://Models/Paper Airplane.fbx" id="1_h2w5x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2ef83"]
+size = Vector3(0.343475, 1.99585, 1.51062)
+
+[sub_resource type="Animation" id="Animation_6vv2t"]
+resource_name = "default"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AirplaneMesh:rotation:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.0523599, -0.25, 0, 0.25, 0, -0.0523599, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1, 3, 4)
+}
+
+[sub_resource type="Animation" id="Animation_jfp3o"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AirplaneMesh:rotation:z")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hyxr3"]
+_data = {
+"RESET": SubResource("Animation_jfp3o"),
+"default": SubResource("Animation_6vv2t")
+}
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(0.999943, 0.010645, 0, -0.010645, 0.999943, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_1exl3")
+
+[node name="AirplaneMesh" parent="." instance=ExtResource("1_h2w5x")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.000610359, -0.170639, -0.00164795)
+shape = SubResource("BoxShape3D_2ef83")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hyxr3")
+}
+autoplay = "default"

@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://ppc0mxskmvom"]
+
+[ext_resource type="Texture2D" uid="uid://dtfp1x3i23nob" path="res://Assets/Images/sky2.jpg" id="1_bajx6"]
+[ext_resource type="PackedScene" uid="uid://b7vgj0rkviwms" path="res://Scenes/hud.tscn" id="2_823qp"]
+[ext_resource type="PackedScene" uid="uid://ck8ggdam2ubrn" path="res://Scenes/player.tscn" id="2_ewus5"]
+[ext_resource type="Script" path="res://Scripts/Camera.cs" id="3_a2ukb"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_v1wyg"]
+panorama = ExtResource("1_bajx6")
+
+[sub_resource type="Sky" id="Sky_5rf2x"]
+sky_material = SubResource("PanoramaSkyMaterial_v1wyg")
+
+[sub_resource type="Environment" id="Environment_unk8m"]
+background_mode = 2
+sky = SubResource("Sky_5rf2x")
+sky_custom_fov = 75.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.025
+
+[sub_resource type="SphereMesh" id="SphereMesh_y1xnp"]
+radius = 100.0
+height = 10.0
+
+[node name="Main" type="Node"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-2.82453e-08, 0.763187, -0.646177, 3.336e-08, 0.646177, 0.763187, 1, 0, -4.37114e-08, -4.55498, 5.00489, 0)
+light_color = Color(1, 1, 0.847059, 1)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_unk8m")
+
+[node name="HUD" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("2_823qp")]
+Player = NodePath("../Player")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Player")]
+transform = Transform3D(-4.30539e-08, 0.172789, -0.984959, 7.55283e-09, 0.984959, 0.172789, 1, 1.19904e-14, -4.37114e-08, -2.5, 1, 0)
+script = ExtResource("3_a2ukb")
+Player = NodePath("../Player")
+
+[node name="Player" parent="." instance=ExtResource("2_ewus5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="PlayerVector" type="Marker3D" parent="Player"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.99982, -0.018988, 0, 0.018988, 0.99982, 0, 0, 0, 1, 0, -17.2799, 0)
+mesh = SubResource("SphereMesh_y1xnp")
+skeleton = NodePath("../Player")
